@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Contracts\UserAuthenticateServiceInterface;
+use App\Contracts\UserRepositoryInterface;
+use App\Repositories\MongoUserRepository;
+use App\Services\UserAuthenticateService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
 
@@ -12,7 +16,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $singletons = [
+            // Repositories
+            UserRepositoryInterface::class               => MongoUserRepository::class,
+
+            // Services
+            UserAuthenticateServiceInterface::class      => UserAuthenticateService::class,
+        ];
+
+        foreach ($singletons as $abstract => $concrete) {
+            $this->app->singleton($abstract, $concrete);
+        }
     }
 
     /**
