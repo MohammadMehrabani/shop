@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
 use App\Contracts\UserAuthenticateServiceInterface;
 use App\DataTransferObjects\UserDto;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\User\AuthenticateRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;

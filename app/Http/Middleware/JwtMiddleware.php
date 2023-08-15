@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class JwtMiddleware extends BaseMiddleware
 {
@@ -24,7 +23,7 @@ class JwtMiddleware extends BaseMiddleware
     {
         try {
 
-            JWTAuth::parseToken()->authenticate();
+            $role = $this->auth->parseToken()->getClaim('role');
 
         } catch (Exception $e) {
             if ($e instanceof TokenInvalidException) {
@@ -34,6 +33,10 @@ class JwtMiddleware extends BaseMiddleware
             } else {
                 throw new AuthenticationException('Authorization Token not found');
             }
+        }
+
+        if ($role != $guard) {
+            throw new AuthenticationException('Token is Invalid!');
         }
 
         return $next($request);

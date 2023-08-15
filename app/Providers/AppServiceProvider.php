@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Contracts\AdminAuthenticateServiceInterface;
 use App\Contracts\UserAuthenticateServiceInterface;
 use App\Contracts\UserRepositoryInterface;
 use App\Repositories\MongoUserRepository;
+use App\Services\AdminAuthenticateService;
 use App\Services\UserAuthenticateService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
@@ -22,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
             // Services
             UserAuthenticateServiceInterface::class      => UserAuthenticateService::class,
+            AdminAuthenticateServiceInterface::class      => AdminAuthenticateService::class,
         ];
 
         foreach ($singletons as $abstract => $concrete) {
