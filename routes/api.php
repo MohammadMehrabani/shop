@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\AuthController as UserAuthController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,15 @@ Route::name('admin.')->prefix('admin')->group(function () {
     Route::post('login', [AdminAuthController::class, 'login'])->name('login');
 
     Route::group(['middleware' => ['jwt.verify:admin']], function () {
+
         Route::get('me', [AdminAuthController::class, 'me'])->name('me');
+
+        // product endpoints
+        Route::apiResource('products', ProductController::class)->except('update');
+        Route::post('products/{product}', [ProductController::class, 'update'])->name('products.update');
+
     });
 
 });
+
+Route::get('products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');

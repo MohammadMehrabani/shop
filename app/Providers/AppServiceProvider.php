@@ -3,10 +3,14 @@
 namespace App\Providers;
 
 use App\Contracts\AdminAuthenticateServiceInterface;
+use App\Contracts\ProductRepositoryInterface;
+use App\Contracts\ProductServiceInterface;
 use App\Contracts\UserAuthenticateServiceInterface;
 use App\Contracts\UserRepositoryInterface;
+use App\Repositories\MongoProductRepository;
 use App\Repositories\MongoUserRepository;
 use App\Services\AdminAuthenticateService;
+use App\Services\ProductService;
 use App\Services\UserAuthenticateService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
@@ -21,10 +25,12 @@ class AppServiceProvider extends ServiceProvider
         $singletons = [
             // Repositories
             UserRepositoryInterface::class               => MongoUserRepository::class,
+            ProductRepositoryInterface::class               => MongoProductRepository::class,
 
             // Services
             UserAuthenticateServiceInterface::class      => UserAuthenticateService::class,
             AdminAuthenticateServiceInterface::class      => AdminAuthenticateService::class,
+            ProductServiceInterface::class      => ProductService::class,
         ];
 
         foreach ($singletons as $abstract => $concrete) {
