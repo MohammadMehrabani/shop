@@ -3,13 +3,19 @@
 namespace App\Providers;
 
 use App\Contracts\AdminAuthenticateServiceInterface;
+use App\Contracts\OrderProductRepositoryInterface;
+use App\Contracts\OrderRepositoryInterface;
+use App\Contracts\OrderServiceInterface;
 use App\Contracts\ProductRepositoryInterface;
 use App\Contracts\ProductServiceInterface;
 use App\Contracts\UserAuthenticateServiceInterface;
 use App\Contracts\UserRepositoryInterface;
+use App\Repositories\MongoOrderProductRepository;
+use App\Repositories\MongoOrderRepository;
 use App\Repositories\MongoProductRepository;
 use App\Repositories\MongoUserRepository;
 use App\Services\AdminAuthenticateService;
+use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\UserAuthenticateService;
 use Illuminate\Support\ServiceProvider;
@@ -25,12 +31,15 @@ class AppServiceProvider extends ServiceProvider
         $singletons = [
             // Repositories
             UserRepositoryInterface::class               => MongoUserRepository::class,
-            ProductRepositoryInterface::class               => MongoProductRepository::class,
+            ProductRepositoryInterface::class            => MongoProductRepository::class,
+            OrderRepositoryInterface::class              => MongoOrderRepository::class,
+            OrderProductRepositoryInterface::class       => MongoOrderProductRepository::class,
 
             // Services
             UserAuthenticateServiceInterface::class      => UserAuthenticateService::class,
-            AdminAuthenticateServiceInterface::class      => AdminAuthenticateService::class,
-            ProductServiceInterface::class      => ProductService::class,
+            AdminAuthenticateServiceInterface::class     => AdminAuthenticateService::class,
+            ProductServiceInterface::class               => ProductService::class,
+            OrderServiceInterface::class                 => OrderService::class,
         ];
 
         foreach ($singletons as $abstract => $concrete) {
