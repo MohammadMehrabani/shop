@@ -29,7 +29,7 @@ class MongoUserRepository extends MongoBaseRepository implements UserRepositoryI
             'firstname' => $arguments->firstName ?: $user->firstname,
             'lastname' => $arguments->lastName ?: $user->lastname,
             'password' => $arguments->password ?: $user->password,
-            'mobile_verified_at' => $arguments->mobileVerifiedAt ?: $user->mobile_verified_at
+            'mobile_verified_at' => $arguments->mobileVerifiedAt ?: $user->mobile_verified_at->format('Y-m-d H:i:s')
         ]);
 
         return $user;
