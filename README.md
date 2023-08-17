@@ -10,8 +10,7 @@
 - `sudo chmod +x ./docker/8.2/rs-init.sh`
 - `sudo docker compose up -d`
 - `sudo docker exec mongo1 /scripts/rs-init.sh`
-- `sudo docker exec -it shop-app-1 bash` in container shop-app-1 run `composer install` after install completed `exit`
-
+- `sudo docker exec shop-app-1 composer install`
 - `sudo ./vendor/bin/sail artisan key:generate`
 - `sudo ./vendor/bin/sail artisan jwt:secret`
 - `sudo ./vendor/bin/sail artisan migrate --seed`
