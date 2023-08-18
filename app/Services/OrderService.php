@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Contracts\OrderProductRepositoryInterface;
 use App\Contracts\OrderRepositoryInterface;
 use App\Contracts\OrderServiceInterface;
+use App\Contracts\ProductRepositoryInterface;
 use App\DataTransferObjects\OrderDto;
 use App\DataTransferObjects\OrderProductDto;
 use App\Exceptions\ApiException;
 use App\Models\Order;
-use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -18,6 +18,7 @@ class OrderService implements OrderServiceInterface
     public function __construct(
         private OrderRepositoryInterface $orderRepository,
         private OrderProductRepositoryInterface $orderProductRepository,
+        private ProductRepositoryInterface $productRepository,
     ) {}
 
     public function getAllOrdersWithPaginate(OrderDto $orderDto, $perPage = 15, $orderBy = '')
@@ -87,8 +88,7 @@ class OrderService implements OrderServiceInterface
         foreach ($products as $product) {
             $totalAmount += $product->price * $countPerProduct[$product->id];
 
-            $product->inventory -= $countPerProduct[$product->id];
-            $product->save();
+            $product = $this->productRepository->decrementInventory($product, $countPerProduct[$product->id]);
 
             if ($product->inventory < 0)
                 throw new ApiException('the product '.$product->id.' is not available', 400);
@@ -100,9 +100,7 @@ class OrderService implements OrderServiceInterface
     private function checkOrderItemsExists($_orderProducts)
     {
         $productsId = $_orderProducts->pluck('product_id')->toArray();
-        $products = Product::query()
-            ->whereIn('_id', $productsId)
-            ->get();
+        $products = $this->productRepository->getProductsWithIds($productsId);
         $checkProducts = $products->pluck('_id')->toArray();
         if (count($checkProducts) != count($productsId)) {
             $productNotExists = array_diff($productsId, $checkProducts);

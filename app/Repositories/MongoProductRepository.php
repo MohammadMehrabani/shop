@@ -48,4 +48,19 @@ class MongoProductRepository extends MongoBaseRepository implements ProductRepos
     {
         return $product->delete();
     }
+
+    public function decrementInventory(Product $product, $count)
+    {
+        $product->inventory -= $count;
+        $product->save();
+
+        return $product;
+    }
+
+    public function getProductsWithIds(array $ids)
+    {
+        return Product::query()
+            ->whereIn('_id', $ids)
+            ->get();
+    }
 }

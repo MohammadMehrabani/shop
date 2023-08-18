@@ -12,4 +12,6 @@ interface ProductRepositoryInterface
     public function update(Product $product, ProductDto $arguments);
     public function show(Product $product);
     public function delete(Product $product);
+    public function decrementInventory(Product $product, $count);
+    public function getProductsWithIds(array $ids);
 }
