@@ -51,13 +51,15 @@ class OrderService implements OrderServiceInterface
 
             $products = $this->checkOrderItemsExists($_orderProducts);
 
+            $this->checkProductAvailable($products, $countPerProduct);
+
             $order = $this->orderRepository->create($orderDto);
             $_orderProducts = $_orderProducts->map(function ($item) use($order) {
                 $item['order_id'] = $order->id;
                 return $item;
             });
 
-            $totalAmount = $this->chackAndUpdateInventory($products, $countPerProduct);
+            $totalAmount = $this->productUpdateInventory($products, $countPerProduct);
             $this->orderProductRepository->insert($_orderProducts->toArray());
             $order = $this->orderRepository->update($order, OrderDto::fromArray(['totalAmount' => $totalAmount]));
             DB::commit();
@@ -81,7 +83,7 @@ class OrderService implements OrderServiceInterface
         return $this->orderRepository->show($order);
     }
 
-    private function chackAndUpdateInventory($products, $countPerProduct)
+    private function productUpdateInventory($products, $countPerProduct)
     {
         $totalAmount = 0;
 
@@ -111,5 +113,15 @@ class OrderService implements OrderServiceInterface
         }
 
         return $products;
+    }
+
+    private function checkProductAvailable($products, $countPerProduct)
+    {
+        foreach ($products as $product) {
+
+            if($product->inventory < $countPerProduct[$product->id])
+                throw new ApiException('The product '.$product->id.' is not available', 400);
+
+        }
     }
 }
