@@ -10,6 +10,7 @@
 - `sudo chmod +x ./docker/8.2/rs-init.sh`
 - `sudo docker compose up -d`
 - `sudo docker exec mongo1 /scripts/rs-init.sh`
+- `Waiting for 10~20 seconds for replicaset configuration to be applied`
 - `sudo docker exec shop-app-1 composer install`
 - `sudo ./vendor/bin/sail artisan key:generate`
 - `sudo ./vendor/bin/sail artisan jwt:secret`
