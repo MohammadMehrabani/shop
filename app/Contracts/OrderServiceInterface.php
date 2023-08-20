@@ -13,9 +13,8 @@ interface OrderServiceInterface
     /**
      * @param OrderDto $orderDto
      * @param OrderProductDto[] $orderProducts
-     * @param int|string $userId
      * @return mixed
      */
-    public function store(OrderDto $orderDto, array $orderProducts, int|string $userId);
-    public function show(Order $order);
+    public function store(OrderDto $orderDto, array $orderProducts);
+    public function show(Order $order, $userId);
 }

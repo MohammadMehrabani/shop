@@ -47,10 +47,9 @@ class OrderController extends Controller
             $orderProductDto[] = OrderProductDto::fromArray($item);
         }
 
-        $userId = auth()->id();
-        $orderDto = OrderDto::fromArray(['userId' => $userId]);
+        $orderDto = OrderDto::fromArray(['userId' => auth()->id()]);
 
-        $data = $this->orderService->store($orderDto, $orderProductDto, $userId);
+        $data = $this->orderService->store($orderDto, $orderProductDto);
 
         if ($data)
             return response()->success($data);
@@ -63,6 +62,6 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return response()->success($this->orderService->show($order));
+        return response()->success($this->orderService->show($order, auth()->id()));
     }
 }

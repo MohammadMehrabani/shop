@@ -29,10 +29,9 @@ class OrderService implements OrderServiceInterface
     /**
      * @param OrderDto $orderDto
      * @param OrderProductDto[] $orderProducts
-     * @param $userId
      * @return mixed
      */
-    public function store(OrderDto $orderDto, array $orderProducts, $userId)
+    public function store(OrderDto $orderDto, array $orderProducts)
     {
         try {
             DB::beginTransaction();
@@ -78,8 +77,11 @@ class OrderService implements OrderServiceInterface
         return false;
     }
 
-    public function show(Order $order)
+    public function show(Order $order, $userId)
     {
+        if ($order->user_id != $userId)
+            throw new ApiException('access denied', 403);
+
         return $this->orderRepository->show($order);
     }
 
