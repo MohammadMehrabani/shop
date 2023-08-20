@@ -36,8 +36,7 @@ Route::name('admin.')->prefix('admin')->group(function () {
         Route::get('me', [AdminAuthController::class, 'me'])->name('me');
 
         // product endpoints
-        Route::apiResource('products', ProductController::class)->except('update');
-        Route::post('products/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::apiResource('products', ProductController::class);
         // order endpoints
         Route::get('orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
         Route::get('orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
