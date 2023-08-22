@@ -15,9 +15,9 @@ class OrderDto
     public static function fromRequest(Request $request)
     {
         return new self(
-            $request->validated('id') ?? null,
-            $request->validated('userId') ?? null,
-            $request->validated('totalAmount') ?? null,
+            $request->validated('id'),
+            $request->validated('userId'),
+            $request->validated('totalAmount'),
         );
     }
 

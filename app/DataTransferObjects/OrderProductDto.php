@@ -16,10 +16,10 @@ class OrderProductDto
     public static function fromRequest(Request $request)
     {
         return new self(
-            $request->validated('id') ?? null,
-            $request->validated('productId') ?? null,
-            $request->validated('orderId') ?? null,
-            $request->validated('count') ?? null,
+            $request->validated('id'),
+            $request->validated('productId'),
+            $request->validated('orderId'),
+            $request->validated('count'),
         );
     }
 

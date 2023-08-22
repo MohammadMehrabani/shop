@@ -16,10 +16,10 @@ class ProductDto
     public static function fromRequest(Request $request)
     {
         return new self(
-            $request->validated('id') ?? null,
-            $request->validated('title') ?? null,
-            $request->validated('price') ?? null,
-            $request->validated('inventory') ?? null
+            $request->validated('id'),
+            $request->validated('title'),
+            $request->validated('price'),
+            $request->validated('inventory')
         );
     }
 

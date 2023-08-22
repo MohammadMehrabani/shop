@@ -3,7 +3,6 @@
 namespace App\DataTransferObjects;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\ValidatedInput;
 
 class UserDto
 {
@@ -16,15 +15,15 @@ class UserDto
         public readonly ?string $otp,
     ) {}
 
-    public static function fromRequest(Request|ValidatedInput $request)
+    public static function fromRequest(Request $request)
     {
         return new self(
-            $request->firstname ?? null,
-            $request->lastname ?? null,
-            $request->mobile ?? null,
-            $request->password ?? null,
-            $request->mobileVerifiedAt ?? null,
-            $request->code ?? null,
+            $request->validated('firstname'),
+            $request->validated('lastname'),
+            $request->validated('mobile'),
+            $request->validated('password'),
+            $request->validated('mobileVerifiedAt'),
+            $request->validated('code'),
         );
     }
 

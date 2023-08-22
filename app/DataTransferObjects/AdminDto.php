@@ -15,9 +15,9 @@ class AdminDto
     public static function fromRequest(Request $request)
     {
         return new self(
-            $request->validated('name') ?? null,
-            $request->validated('email') ?? null,
-            $request->validated('password') ?? null,
+            $request->validated('name'),
+            $request->validated('email'),
+            $request->validated('password'),
         );
     }
 

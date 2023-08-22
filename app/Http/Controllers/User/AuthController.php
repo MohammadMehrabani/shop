@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     public function authenticate(AuthenticateRequest $request)
     {
-        $dto = UserDto::fromRequest($request->safe());
+        $dto = UserDto::fromRequest($request);
 
         $data = $this->userAuthenticateService->authenticate($dto);
 
@@ -29,7 +29,7 @@ class AuthController extends Controller
 
     public function sendOtp(SendOtpRequest $request)
     {
-        $dto = UserDto::fromRequest($request->safe());
+        $dto = UserDto::fromRequest($request);
 
         $data = $this->userAuthenticateService->sendOtp($dto);
 
@@ -45,7 +45,7 @@ class AuthController extends Controller
 
     public function verifyOtp(VaerifyOtpRequest $request)
     {
-        $dto = UserDto::fromRequest($request->safe());
+        $dto = UserDto::fromRequest($request);
 
         $data = $this->userAuthenticateService->verifyOtp($dto);
 
@@ -54,7 +54,7 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        $dto = UserDto::fromRequest($request->safe());
+        $dto = UserDto::fromRequest($request);
 
         $data = $this->userAuthenticateService->register($dto);
 
@@ -63,7 +63,7 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
-        $dto = UserDto::fromRequest($request->safe());
+        $dto = UserDto::fromRequest($request);
 
         $data = $this->userAuthenticateService->login($dto);
 
