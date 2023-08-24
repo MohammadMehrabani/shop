@@ -7,11 +7,14 @@
 ## setup steps
 
 - `cp .env.example .env`
+- `openssl rand -base64 756 > ./docker/8.2/key`
+- `sudo chmod 400 ./docker/8.2/key`
 - `sudo chmod +x ./docker/8.2/rs-init.sh`
+- `sudo chmod +x ./docker/8.2/createUser.sh`
 - `sudo docker compose up -d`
-- `sudo docker exec mongo1 /scripts/rs-init.sh`
-- `Waiting for 10~20 seconds for replicaset configuration to be applied`
-- `sudo docker exec shop-app-1 composer install`
+- `sudo docker exec mongo_primary /scripts/rs-init.sh`
+- `sudo docker exec mongo_primary /scripts/createUser.sh`
+- `sudo docker exec app composer install`
 - `sudo ./vendor/bin/sail artisan key:generate`
 - `sudo ./vendor/bin/sail artisan jwt:secret`
 - `sudo ./vendor/bin/sail artisan migrate --seed`

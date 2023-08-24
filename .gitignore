@@ -18,3 +18,4 @@ yarn-error.log
 /.idea
 /.vscode
 /docker/8.2/data*
+/docker/8.2/key

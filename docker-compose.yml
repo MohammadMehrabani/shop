@@ -8,6 +8,7 @@ services:
       args:
         WWWGROUP: '${WWWGROUP}'
     image: sail-8.2/app
+    container_name: app
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     ports:
@@ -25,32 +26,51 @@ services:
       - sail
     depends_on:
       - redis
-      - mongo1
-  mongo1:
-    container_name: mongo1
+      - mongo_primary
+  mongo_primary:
+    container_name: mongo_primary
     image: mongo:4.4.7
     volumes:
       - ./docker/8.2/data1:/data/db
+      - ./docker/8.2/key:/scripts/key
       - ./docker/8.2/rs-init.sh:/scripts/rs-init.sh
+      - ./docker/8.2/createUser.sh:/scripts/createUser.sh
     networks:
       - sail
     ports:
       - 27021:27017
+    depends_on:
+        - mongo_secondary_1
+        - mongo_secondary_2
     links:
-      - mongo2
+      - mongo_secondary_1
+      - mongo_secondary_2
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
-  mongo2:
-    container_name: mongo2
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs", "--keyFile", "/scripts/key" ]
+  mongo_secondary_1:
+    container_name: mongo_secondary_1
     image: mongo:4.4.7
     volumes:
       - ./docker/8.2/data2:/data/db
+      - ./docker/8.2/key:/scripts/key
     networks:
       - sail
     ports:
       - 27022:27017
     restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs", "--keyFile", "/scripts/key" ]
+  mongo_secondary_2:
+      container_name: mongo_secondary_2
+      image: mongo:4.4.7
+      volumes:
+          - ./docker/8.2/data3:/data/db
+          - ./docker/8.2/key:/scripts/key
+      networks:
+          - sail
+      ports:
+          - 27023:27017
+      restart: always
+      entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs", "--keyFile", "/scripts/key" ]
   redis:
     image: 'redis:alpine'
     ports:
